@@ -12,11 +12,37 @@ const Navbar = () => {
     if (location.pathname === '/') {
       if (location.hash === '#menu') {
         setMenu('menu')
+      } else if (location.hash === '#about') {
+        setMenu('about')
+      } else if (location.hash === '#mobile-app') {
+        setMenu('mobile-app')
+      } else if (location.hash === '#contact') {
+        setMenu('contact')
       } else {
         setMenu('home')
       }
     }
   }, [location.pathname, location.hash])
+
+  const scrollToSection = (sectionId, menuName) => {
+    setMenu(menuName)
+    navigate(`/#${sectionId}`)
+    setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
+  }
+
+  const handleAboutClick = () => {
+    scrollToSection('about', 'about')
+  }
+
+  const handleMobileAppClick = () => {
+    scrollToSection('mobile-app', 'mobile-app')
+  }
+
+  const handleContactClick = () => {
+    scrollToSection('contact', 'contact')
+  }
 
   return (
     <header className='navbar'>
@@ -26,10 +52,10 @@ const Navbar = () => {
 
       <nav className='navbar-menu'>
         <li onClick={() => navigate('/')} className={menu === 'home' ? 'active' : ''}>Home</li>
-        <li onClick={() => navigate('/#menu')} className={menu === 'menu' ? 'active' : ''}>Menu</li>
-        <li onClick={() => setMenu('about')} className={menu === 'about' ? 'active' : ''}>About</li>
-        <li onClick={() => setMenu('mobile-app')} className={menu === 'mobile-app' ? 'active' : ''}>Mobile-app</li>
-        <li onClick={() => setMenu('contact')} className={menu === 'contact' ? 'active' : ''}>Contact</li>
+        <li onClick={() => scrollToSection('menu', 'menu')} className={menu === 'menu' ? 'active' : ''}>Menu</li>
+        <li onClick={handleAboutClick} className={menu === 'about' ? 'active' : ''}>About</li>
+        <li onClick={handleMobileAppClick} className={menu === 'mobile-app' ? 'active' : ''}>Mobile-app</li>
+        <li onClick={handleContactClick} className={menu === 'contact' ? 'active' : ''}>Contact</li>
       </nav>
 
       <div className='navbar-right'>
