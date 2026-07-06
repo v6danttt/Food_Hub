@@ -58,3 +58,80 @@
 .header-contents button:hover {
   background: #e34811;
 }
+
+.search-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 40;
+}
+
+.search-box {
+  width: 90%;
+  max-width: 760px;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  color: #222;
+}
+
+.search-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.search-close {
+  background: #ff5a1f;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-results {
+  max-height: 220px;
+  overflow: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.4rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-item .item-type {
+  margin-left: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.search-item .item-price {
+  color: #333;
+  font-weight: 600;
+}
+
+.no-result {
+  padding: 0.5rem;
+  color: #666;
+}
