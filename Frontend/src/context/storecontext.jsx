@@ -27,11 +27,13 @@ const StoreContextProvider = ({ children }) => {
     ]
   })
 
+  const [searchOpen, setSearchOpen] = useState(false)
+
   const foods = useMemo(() => menuItems.filter((item) => item.type === 'food'), [menuItems])
   const drinks = useMemo(() => menuItems.filter((item) => item.type === 'drink'), [menuItems])
   const snacks = useMemo(() => menuItems.filter((item) => item.type === 'snack'), [menuItems])
 
-  const contextValue = { menuItems, foods, drinks, snacks, aboutInfo }
+  const contextValue = { menuItems, foods, drinks, snacks, aboutInfo, searchOpen, setSearchOpen }
 
   return (
     <storecontext.Provider value={contextValue}>

@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './navbar.css'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { assets } from '../../assets/assests'
+import { storecontext } from '../../context/storecontext'
 
 const Navbar = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [menu, setMenu] = React.useState('home')
+  const { searchOpen, setSearchOpen } = useContext(storecontext)
 
   React.useEffect(() => {
     if (location.pathname === '/') {
@@ -59,7 +61,12 @@ const Navbar = () => {
       </nav>
 
       <div className='navbar-right'>
-        <button className='icon-button' aria-label='Search'>
+        <button
+          className='icon-button'
+          aria-label='Search'
+          onClick={() => setSearchOpen((v) => !v)}
+          aria-expanded={searchOpen}
+        >
           <img src={assets.seo} alt='Search' />
         </button>
         <button className='icon-button' aria-label='Cart'>
