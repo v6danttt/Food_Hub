@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchen Pass — Sign in to FoodHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <!-- LEFT BRAND PANEL -->
+  <div class="brand">
+    <div class="brand-mark">
+      <span class="dot"></span>
+      <span>FoodHub · Kitchen Access</span>
+    </div>
+
+    <div class="brand-hero">
+      <div class="eyebrow">Table for one</div>
+      <h1>Everyone's<br><em>invited</em> to<br>the kitchen.</h1>
+      <p>One account gets you every menu, every vendor, every order — tracked live from stove to doorstep.</p>
+
+      <div class="tags">
+        <div class="tag t1"><b>●</b> Live tracking</div>
+        <div class="tag t2"><b>●</b> 2,400+ kitchens</div>
+        <div class="tag t3"><b>●</b> 18 min avg delivery</div>
+        <div class="tag t4"><b>●</b> Group orders</div>
+        <div class="tag t5"><b>●</b> Saved addresses</div>
+        <div class="tag t6"><b>●</b> Loyalty points</div>
+      </div>
+    </div>
+
+    <div class="brand-foot">
+      <div><strong>4.8★</strong>avg. rating</div>
+      <div><strong>120k+</strong>orders / week</div>
+      <div><strong>35</strong>cities</div>
+    </div>
+  </div>
+
+  <!-- RIGHT AUTH TICKET -->
+  <div class="stage">
+    <div class="ticket">
+      <div class="ticket-head">
+        <div>
+          <div class="ticket-title" id="ticketTitle">Welcome back</div>
+          <div class="ticket-sub" id="ticketSub">Sign in to reorder your usual</div>
+        </div>
+        <div class="order-no">ORDER <span id="orderNo">#00184</span></div>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <div class="tab-indicator"></div>
+        <button class="tab-btn active" id="tabLogin" type="button">Sign in</button>
+        <button class="tab-btn" id="tabRegister" type="button">Create account</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="active" novalidate>
+        <div class="field" id="loginEmailField">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+          <small class="err">Enter a valid email address</small>
+        </div>
+
+        <div class="field" id="loginPassField">
+          <label for="loginPass">Password</label>
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="pw-toggle" data-target="loginPass">SHOW</button>
+          <small class="err">Password is required</small>
+        </div>
+
+        <div class="row-between">
+          <label class="remember"><input type="checkbox"> Keep me signed in</label>
+          <a href="#" class="forgot">Forgot?</a>
+        </div>
+
+        <button type="submit" class="submit-btn" id="loginSubmit">
+          <span class="btn-label">Sign in</span>
+          <span class="spinner"></span>
+        </button>
+
+        <div class="divider">or continue with</div>
+        <div class="social-row">
+          <button type="button" class="social-btn">Google</button>
+          <button type="button" class="social-btn">Apple</button>
+        </div>
+
+        <div class="switch-line">
+          New to FoodHub? <button type="button" id="goRegister">Create an account</button>
+        </div>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" novalidate>
+        <div class="field" id="regNameField">
+          <label for="regName">Full name</label>
+          <input type="text" id="regName" placeholder="Alex Rivera" autocomplete="name">
+          <small class="err">Tell us your name</small>
+        </div>
+
+        <div class="field" id="regEmailField">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email">
+          <small class="err">Enter a valid email address</small>
+        </div>
+
+        <div class="field" id="regPassField">
+          <label for="regPass">Password</label>
+          <input type="password" id="regPass" placeholder="Min. 8 characters" autocomplete="new-password">
+          <button type="button" class="pw-toggle" data-target="regPass">SHOW</button>
+          <div class="strength"><i id="strengthBar"></i></div>
+          <small class="err">Password needs at least 8 characters</small>
+        </div>
+
+        <div class="field" id="regConfirmField">
+          <label for="regConfirm">Confirm password</label>
+          <input type="password" id="regConfirm" placeholder="Repeat password" autocomplete="new-password">
+          <small class="err">Passwords don't match</small>
+        </div>
+
+        <button type="submit" class="submit-btn" id="registerSubmit">
+          <span class="btn-label">Create account</span>
+          <span class="spinner"></span>
+        </button>
+
+        <div class="switch-line">
+          Already have an account? <button type="button" id="goLogin">Sign in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Signed in</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>
