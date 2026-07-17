@@ -1,28 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
+@import"tailwindcss";
 
-*{
-   padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: outfit;
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #fafafa;
+  color: #1f2328;
 }
-body{
-  min-height: 100vh;
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Poppins", sans-serif;
 }
-a{
-   text-decoration: none;
-   color: inherit;
+
+::-webkit-scrollbar {
+  width: 8px;
 }
-.app{
-   width: 80%;
-   margin: 0 auto;
+
+::-webkit-scrollbar-thumb {
+  background: #fdba74;
+  border-radius: 4px;
 }
-@keyframes fadeIn
-{
-  from 0%{
-    opacity: 0;
-  }
-  to 100%{
-    opacity: 1;
-  }
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
 }
