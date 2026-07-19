@@ -1,8 +1,10 @@
+import{ Link }from"react-router-dom";
+import react from"react";
 const RestaurantCard = ({ restaurant }) => {
   return (
     <Link
       to={`/restaurant/${restaurant._id}`}
-      className="group bg-white rounded-2xl overflow-hidden border border-orange-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+      className="*:group block bg-white border border-orange-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300"
     >
       <div className="h-40 overflow-hidden">
         <img

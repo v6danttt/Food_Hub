@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <section className="bg-gradient-to-br from-brand-500 to-brand-700 rounded-3xl px-8 py-14 text-white mb-10">
+      <section className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl px-8 py-14 text-white mb-10">
         <h1 className="font-display text-3xl sm:text-4xl font-extrabold max-w-lg">
           Order food from the best restaurants near you
         </h1>
@@ -48,11 +48,11 @@ const Home = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search restaurants or cuisines..."
-            className="flex-1 rounded-l-full px-5 py-3 text-ink text-sm focus:outline-none"
+            className="flex-1 rounded-l-full px-5 py-3 text-gray-900 text-sm focus:outline-none"
           />
           <button
             type="submit"
-            className="bg-ink text-white px-6 rounded-r-full font-semibold text-sm hover:bg-black transition-colors"
+            className="bg-gray-900 text-white px-6 rounded-r-full font-semibold text-sm hover:bg-black transition-colors"
           >
             Search
           </button>
