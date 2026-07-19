@@ -94,15 +94,17 @@ const RestaurantDetail = () => {
                         }`}
                       />
                     </span>
-                    <h3 className="font-semibold text-sm">{item.name}</h3>
+                    <h3 className="font-semibold text-lg text-gray-900">{item.name}</h3>
                   </div>
-                  <p className="text-xs text-ink/50 mt-1 line-clamp-2">{item.description}</p>
+                  <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="font-semibold text-sm">₹{item.price}</span>
+                    <span className="font-bold text-lg text-orange-600">
+                       ₹{item.price}
+                        </span>
                     <button
                       onClick={() => handleAdd(item)}
                       disabled={!item.available}
-                      className="text-xs font-semibold bg-brand-600 hover:bg-brand-700 disabled:opacity-40 text-white px-3 py-1.5 rounded-full transition-colors"
+                     className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2 rounded-lg shadow-md transition duration-200"
                     >
                       {item.available ? "Add" : "Unavailable"}
                     </button>

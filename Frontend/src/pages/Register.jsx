@@ -49,11 +49,12 @@ const Register = () => {
                 type="button"
                 key={r}
                 onClick={() => setForm({ ...form, role: r })}
-                className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-colors ${
-                  form.role === r
-                    ? "bg-brand-600 text-white border-brand-600"
-                    : "border-orange-200 text-ink/70"
-                }`}
+                className={`flex-1 py-3 rounded-lg text-sm font-semibold border transition-colors ${
+                form.role === r
+             ? "bg-orange-500 text-white border-orange-500"
+             : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+               }`}
+              
               >
                 {r === "customer" ? "I'm a Customer" : "I own a Restaurant"}
               </button>
@@ -115,7 +116,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-60"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition duration-200"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>

@@ -60,13 +60,13 @@ const Navbar = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-orange-50 transition-colors"
+                className="px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-100 transition"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="bg-brand-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-brand-700 transition-colors"
+                className="px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-100 transition"
               >
                 Sign Up
               </Link>
