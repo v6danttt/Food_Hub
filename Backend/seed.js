@@ -54,6 +54,36 @@ const seed = async () => {
     rating: 4.2,
   });
 
+  const restaurant3 = await Restaurant.create({
+  owner: owner._id,
+  name: "Burger Hub",
+  description: "Juicy burgers and crispy fries",
+  cuisine: "Fast Food",
+  address: "FC Road, Pune",
+  image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600",
+  rating: 4.6,
+});
+
+const restaurant4 = await Restaurant.create({
+  owner: owner._id,
+  name: "Cafe Delight",
+  description: "Coffee, desserts and snacks",
+  cuisine: "Cafe",
+  address: "Baner, Pune",
+  image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600",
+  rating: 4.7,
+});
+
+const restaurant5 = await Restaurant.create({
+  owner: owner._id,
+  name: "Sushi World",
+  description: "Fresh Japanese sushi and rolls",
+  cuisine: "Japanese",
+  address: "Koregaon Park, Pune",
+  image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600",
+  rating: 4.8,
+});
+
   console.log("Creating demo menu items...");
   await MenuItem.insertMany([
     {
@@ -109,7 +139,64 @@ const seed = async () => {
       category: "Starters",
       isVeg: true,
       image: "https://images.unsplash.com/photo-1619535860434-ba1d8fa32b56?w=400",
+
     },
+
+    {
+  restaurant: restaurant3._id,
+  name: "Cheese Burger",
+  description: "Double cheese burger with fries",
+  price: 199,
+  category: "Burger",
+  isVeg: false,
+  image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
+},
+{
+  restaurant: restaurant3._id,
+  name: "French Fries",
+  description: "Crispy salted fries",
+  price: 99,
+  category: "Sides",
+  isVeg: true,
+  image: "https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400",
+},
+{
+  restaurant: restaurant4._id,
+  name: "Cold Coffee",
+  description: "Creamy cold coffee",
+  price: 149,
+  category: "Beverages",
+  isVeg: true,
+  image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400",
+},
+{
+  restaurant: restaurant4._id,
+  name: "Chocolate Cake",
+  description: "Rich chocolate cake",
+  price: 180,
+  category: "Dessert",
+  isVeg: true,
+  image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",
+},
+{
+  restaurant: restaurant5._id,
+  name: "Salmon Sushi",
+  description: "Fresh salmon sushi",
+  price: 399,
+  category: "Sushi",
+  isVeg: false,
+  image: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400",
+},
+{
+  restaurant: restaurant5._id,
+  name: "California Roll",
+  description: "Crab and avocado sushi roll",
+  price: 350,
+  category: "Sushi",
+  isVeg: false,
+  image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400",
+},
+
   ]);
 
   console.log("Seed data created successfully!");
