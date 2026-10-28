@@ -13,14 +13,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-orange-100">
-      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
+    <nav className="site-nav sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-orange-100">
+      <div className="site-nav-inner max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
         <Link to="/" className="font-display font-extrabold text-xl text-brand-600 flex items-center gap-1">
           <span>🍔</span> TastyTrack
         </Link>
 
-        <div className="flex items-center gap-5 text-sm font-medium text-ink">
-          <Link to="/" className="hover:text-brand-600 transition-colors">
+        <div className="site-nav-links flex items-center gap-5 text-sm font-medium text-ink">
+          <Link to="/" className="site-nav-home-link hover:text-brand-600 transition-colors">
             Restaurants
           </Link>
 
@@ -47,26 +47,26 @@ const Navbar = () => {
           )}
 
           {user ? (
-            <div className="flex items-center gap-3">
+            <div className="site-nav-user flex items-center gap-3">
               <span className="text-ink/60 hidden sm:inline">Hi, {user.name.split(" ")[0]}</span>
               <button
                 onClick={handleLogout}
-                className="bg-ink text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-black transition-colors"
+                className="site-nav-logout bg-ink text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-black transition-colors"
               >
                 Logout
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="site-nav-auth flex items-center gap-2">
               <Link
                 to="/login"
-                className="px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-100 transition"
+                className="site-nav-auth-link px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-100 transition"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-100 transition"
+                className="site-nav-auth-link px-5 py-2 rounded-full border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-100 transition"
               >
                 Sign Up
               </Link>

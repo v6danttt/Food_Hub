@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
- import api from "../api/axios";
-   import RestaurantCard from "../components/RestaurentCard";
-    
+import api from "../api/axios";
+import RestaurantCard from "../components/RestaurentCard";
+
+const foodPhoto =
+  "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1100&q=85";
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const fetchRestaurants = async (query = "") => {
     try {
-      setLoading(true);
       const { data } = await api.get("/restaurants", {
         params: query ? { search: query } : {},
       });
       setRestaurants(data);
       setError("");
-    } catch (err) {
+    } catch {
       setError("Could not load restaurants. Is the backend server running?");
     } finally {
       setLoading(false);
@@ -25,188 +27,195 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchRestaurants();
+    let cancelled = false;
+    api.get("/restaurants").then(({ data }) => {
+      if (cancelled) return;
+      setRestaurants(data);
+      setError("");
+    }).catch(() => {
+      if (!cancelled) {
+        setError("Could not load restaurants. Is the backend server running?");
+      }
+    }).finally(() => {
+      if (!cancelled) setLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setLoading(true);
     fetchRestaurants(search);
+    document.getElementById("restaurants")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleTilt = (event) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+    setTilt({ x: (0.5 - y) * 13, y: (x - 0.5) * 15 });
+  };
+
+  const resetTilt = () => setTilt({ x: 0, y: 0 });
+
+  const handleCuisine = (cuisine) => {
+    setSearch(cuisine);
+    setLoading(true);
+    fetchRestaurants(cuisine);
+    document.getElementById("restaurants")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <section className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl px-8 py-14 text-white mb-10">
-        <h1 className="font-display text-3xl sm:text-4xl font-extrabold max-w-lg">
-          Order food from the best restaurants near you
-        </h1>
-        <p className="mt-3 text-white/90 max-w-md">
-          Fresh meals, fast delivery, and every craving covered.
-        </p>
-        <form onSubmit={handleSearch} className="mt-6 flex max-w-md">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search restaurants or cuisines..."
-            className="flex-1 rounded-l-full px-5 py-3 text-gray-900 text-sm focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="bg-gray-900 text-white px-6 rounded-r-full font-semibold text-sm hover:bg-black transition-colors"
-          >
-            Search
-          </button>
-        </form>
-      </section>
+    <main className="home-page">
+      <div className="home-shell">
+        <section className="hero-panel" aria-labelledby="hero-title">
+          <div className="hero-copy">
+            <div className="hero-eyebrow">
+              <span className="eyebrow-dot" />
+              GOOD FOOD. GOOD MOOD.
+            </div>
+            <h1 id="hero-title">
+              Your next
+              <br />
+              <span>craving</span> called.
+            </h1>
+            <p className="hero-description">
+              Big flavor, delivered fresh. Find your new favorite bite from the
+              best kitchens around you.
+            </p>
 
-      <h2 className="font-display text-xl font-semibold mb-4">All Restaurants</h2>
+            <form className="hero-search" onSubmit={handleSearch}>
+              <span className="search-icon" aria-hidden="true">⌕</span>
+              <input
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="What are you craving?"
+                aria-label="Search restaurants or cuisines"
+              />
+              <button type="submit">Find food <span aria-hidden="true">→</span></button>
+            </form>
 
-      {loading && <p className="text-ink/60">Loading restaurants...</p>}
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-      {!loading && !error && restaurants.length === 0 && (
-        <p className="text-ink/60">
-          No restaurants found. Run <code>npm run seed</code> in the backend folder to add demo data.
-        </p>
-      )}
+            <div className="hero-social-proof">
+              <div className="avatar-stack" aria-hidden="true">
+                <span>😊</span><span>😎</span><span>🥰</span>
+              </div>
+              <div>
+                <div className="social-stars" aria-label="Rated 4.9 out of 5">★★★★★</div>
+                <p>Loved by foodies everywhere</p>
+              </div>
+            </div>
+          </div>
 
-      {/* Restaurant Cards */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-  {restaurants.map((r) => (
-    <RestaurantCard key={r._id} restaurant={r} />
-  ))}
-</div>
+          <div className="hero-visual">
+            <div className="hero-orbit orbit-one" />
+            <div className="hero-orbit orbit-two" />
+            <div className="hero-sparkle sparkle-one" aria-hidden="true">✦</div>
+            <div className="hero-sparkle sparkle-two" aria-hidden="true">✧</div>
+            <div
+              className="hero-food-card"
+              onPointerMove={handleTilt}
+              onPointerLeave={resetTilt}
+              style={{
+                transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+              }}
+            >
+              <img src={foodPhoto} alt="Juicy gourmet burger with fresh toppings" />
+              <div className="food-card-glow" />
+            </div>
+            <div className="floating-badge delivery-badge">
+              <span className="badge-icon">🛵</span>
+              <span><strong>Hot & fresh</strong><small>At your door in 30 min</small></span>
+            </div>
+            <div className="floating-badge rating-badge">
+              <span className="rating-star">★</span>
+              <span><strong>4.9 / 5</strong><small>Foodie approved</small></span>
+            </div>
+            <div className="hero-caption">
+              <span>THE CROWD FAVORITE</span>
+              <strong>Stacked & saucy 🍔</strong>
+            </div>
+          </div>
+          <div className="hero-bottom-note"><span>01</span> YOUR TABLE IS WAITING</div>
+        </section>
 
-{/* Why Choose TastyTrack */}
-<section className="mt-20">
-  <h2 className="text-4xl font-bold text-center mb-10">
-    Why Choose TastyTrack?
-  </h2>
+        <section className="perks-strip" aria-label="TastyTrack benefits">
+          <div><span className="perk-icon">⚡</span><span><strong>Fast delivery</strong><small>Good food, no long waits</small></span></div>
+          <span className="perks-divider" />
+          <div><span className="perk-icon">🥬</span><span><strong>Freshly made</strong><small>Made to order, every time</small></span></div>
+          <span className="perks-divider" />
+          <div><span className="perk-icon">♡</span><span><strong>Local favorites</strong><small>Handpicked near you</small></span></div>
+        </section>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div className="bg-white rounded-2xl shadow p-6 text-center">
-      <div className="text-5xl">🚀</div>
-      <h3 className="text-xl font-bold mt-4">Fast Delivery</h3>
-      <p className="text-gray-600 mt-2">
-        Get food delivered in under 30 minutes.
-      </p>
-    </div>
+        <section className="restaurant-section" id="restaurants">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">A LITTLE SOMETHING FOR EVERYONE</span>
+              <h2>Explore the menu<span>.</span></h2>
+            </div>
+            <a href="#restaurants" className="text-link">Browse all <span aria-hidden="true">↗</span></a>
+          </div>
+          <div className="cuisine-pills" aria-label="Browse by cuisine">
+            <button type="button" className={!search ? "active" : ""} onClick={() => handleCuisine("")}>🍽️ <span>All food</span></button>
+            <button type="button" className={search === "Burger" ? "active" : ""} onClick={() => handleCuisine("Burger")}>🍔 <span>Burgers</span></button>
+            <button type="button" className={search === "Pizza" ? "active" : ""} onClick={() => handleCuisine("Pizza")}>🍕 <span>Pizza</span></button>
+            <button type="button" className={search === "Sushi" ? "active" : ""} onClick={() => handleCuisine("Sushi")}>🍣 <span>Sushi</span></button>
+            <button type="button" className={search === "Indian" ? "active" : ""} onClick={() => handleCuisine("Indian")}>🍛 <span>Indian</span></button>
+          </div>
 
-    <div className="bg-white rounded-2xl shadow p-6 text-center">
-      <div className="text-5xl">🍔</div>
-      <h3 className="text-xl font-bold mt-4">Fresh Food</h3>
-      <p className="text-gray-600 mt-2">
-        Prepared fresh after every order.
-      </p>
-    </div>
+          {loading && <p className="status-message">Finding the good stuff...</p>}
+          {error && <p className="status-message error-message">{error}</p>}
+          {!loading && !error && restaurants.length === 0 && (
+            <p className="status-message">
+              No restaurants found. Run <code>npm run seed</code> in the backend folder to add demo data.
+            </p>
+          )}
+          {!loading && !error && restaurants.length > 0 && (
+            <div className="restaurant-grid">
+              {restaurants.map((restaurant) => (
+                <RestaurantCard key={restaurant._id} restaurant={restaurant} />
+              ))}
+            </div>
+          )}
+        </section>
 
-    <div className="bg-white rounded-2xl shadow p-6 text-center">
-      <div className="text-5xl">💳</div>
-      <h3 className="text-xl font-bold mt-4">Easy Payments</h3>
-      <p className="text-gray-600 mt-2">
-        UPI, Cards & Cash on Delivery.
-      </p>
-    </div>
+        <section className="quote-banner">
+          <span className="quote-mark" aria-hidden="true">“</span>
+          <p>Happiness is just one<br className="mobile-break" /> <em>good meal</em> away.</p>
+          <span className="quote-caption">LET’S MAKE TONIGHT DELICIOUS</span>
+          <span className="quote-doodle" aria-hidden="true">✳</span>
+        </section>
 
-    <div className="bg-white rounded-2xl shadow p-6 text-center">
-      <div className="text-5xl">⭐</div>
-      <h3 className="text-xl font-bold mt-4">Top Rated</h3>
-      <p className="text-gray-600 mt-2">
-        Trusted by thousands of customers.
-      </p>
-    </div>
-  </div>
-</section>
+        <section className="reviews-section">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">THE PEOPLE HAVE SPOKEN</span>
+              <h2>Good food, good words<span>.</span></h2>
+            </div>
+            <div className="review-summary"><strong>4.9</strong><span>★★★★★<small>from happy humans</small></span></div>
+          </div>
+          <div className="review-grid">
+            <article className="review-card"><div className="review-stars">★★★★★</div><p>“Amazing food quality and super fast delivery. Highly recommended!”</p><div className="review-person"><span className="review-avatar">R</span><strong>Rahul Sharma<small>Food enthusiast</small></strong></div></article>
+            <article className="review-card"><div className="review-stars">★★★★★</div><p>“Best food delivery app. Such an easy ordering experience.”</p><div className="review-person"><span className="review-avatar peach">P</span><strong>Priya Patel<small>Happy customer</small></strong></div></article>
+            <article className="review-card"><div className="review-stars">★★★★★</div><p>“Delicious food and quick service. Already planning my next order.”</p><div className="review-person"><span className="review-avatar green">A</span><strong>Amit Verma<small>Local foodie</small></strong></div></article>
+          </div>
+        </section>
 
-    {/* Customer Reviews */}
-<section className="mt-20">
-  <h2 className="text-3xl font-bold text-center mb-10">
-    ⭐ What Our Customers Say
-  </h2>
+        <section className="contact-banner">
+          <div><span className="section-kicker">WE’RE HERE FOR THE CRAVINGS</span><h2>Need a hand?</h2><p>Our friendly team is just a message away.</p></div>
+          <a href="mailto:support@tastytrack.com">support@tastytrack.com <span aria-hidden="true">↗</span></a>
+        </section>
 
-  <div className="grid md:grid-cols-3 gap-6">
-    <div className="bg-white p-6 rounded-xl shadow">
-      <h3 className="font-bold">Rahul Sharma</h3>
-      <p className="text-yellow-500 text-lg">★★★★★</p>
-      <p className="text-gray-600 mt-2">
-        Amazing food quality and super fast delivery. Highly recommended!
-      </p>
-    </div>
-
-    <div className="bg-white p-6 rounded-xl shadow">
-      <h3 className="font-bold">Priya Patel</h3>
-      <p className="text-yellow-500 text-lg">★★★★★</p>
-      <p className="text-gray-600 mt-2">
-        Best food delivery app. Easy ordering experience.
-      </p>
-    </div>
-
-    <div className="bg-white p-6 rounded-xl shadow">
-      <h3 className="font-bold">Amit Verma</h3>
-      <p className="text-yellow-500 text-lg">★★★★☆</p>
-      <p className="text-gray-600 mt-2">
-        Delicious food and quick service. Will order again.
-      </p>
-    </div>
-  </div>
-</section>
-
-   <section className="mt-20 bg-orange-500 text-white rounded-2xl p-10 text-center">
-  <h2 className="text-4xl font-bold">
-    🚀 Fastest Delivery in Your City
-  </h2>
-
-  <p className="mt-4 text-lg">
-    Fresh food delivered to your doorstep in just
-    <span className="font-bold"> 30 Minutes</span>.
-  </p>
-
-  <div className="grid grid-cols-3 gap-6 mt-10">
-    <div>
-      <h1 className="text-5xl">🍔</h1>
-      <p className="mt-2 font-semibold">1000+ Restaurants</p>
-    </div>
-
-    <div>
-      <h1 className="text-5xl">🛵</h1>
-      <p className="mt-2 font-semibold">Fast Delivery</p>
-    </div>
-
-    <div>
-      <h1 className="text-5xl">⭐</h1>
-      <p className="mt-2 font-semibold">4.9 Customer Rating</p>
-    </div>
-  </div>
-</section>
-     <section className="mt-20 bg-gray-100 rounded-xl p-10">
-  <h2 className="text-3xl font-bold mb-6">
-    📞 Contact Us
-  </h2>
-
-  <div className="space-y-3 text-lg">
-    <p>📍 Nagpur, Maharashtra, India</p>
-    <p>📞 +91 9423685170</p>
-    <p>✉ support@tastytrack.com</p>
-    <p>🕒 Mon - Sun : 9:00 AM - 11:00 PM</p>
-  </div>
-</section>
-    
-    <footer className="mt-20 bg-gray-900 text-white py-8 rounded-t-xl">
-  <div className="text-center">
-    <h2 className="text-2xl font-bold">
-      TastyTrack
-    </h2>
-
-    <p className="mt-3 text-gray-400">
-      Delicious food delivered at your doorstep.
-    </p>
-
-    <p className="mt-5 text-gray-500">
-      © {new Date().getFullYear()} TastyTrack. All Rights Reserved.
-    </p>
-  </div>
-</footer>
-   
+        <footer className="home-footer">
+          <a className="footer-brand" href="/">🍔 TastyTrack</a>
+          <span>Made for the love of a really good meal.</span>
+          <span>© {new Date().getFullYear()} TastyTrack</span>
+        </footer>
       </div>
+    </main>
   );
 };
 
